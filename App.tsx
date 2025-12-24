@@ -17,11 +17,10 @@ const MitzvahTracker = React.lazy(() => import('./components/MitzvahTracker').th
 const TriviaPage = React.lazy(() => import('./components/TriviaPage').then(module => ({ default: module.TriviaPage })));
 const ZmanimPage = React.lazy(() => import('./components/ZmanimPage').then(module => ({ default: module.ZmanimPage })));
 const BlogPage = React.lazy(() => import('./components/BlogPage').then(module => ({ default: module.BlogPage })));
-const VideoGeneratorPage = React.lazy(() => import('./components/VideoGeneratorPage').then(module => ({ default: module.VideoGeneratorPage })));
 const RabbiChat = React.lazy(() => import('./components/RabbiChat').then(module => ({ default: module.RabbiChat })));
 const ContactPage = React.lazy(() => import('./components/ContactPage').then(module => ({ default: module.ContactPage })));
 
-type Page = 'home' | 'halacha' | 'siddur' | 'shabbat' | 'tracker' | 'trivia' | 'zmanim' | 'blog' | 'video' | 'chat' | 'contact';
+type Page = 'home' | 'halacha' | 'siddur' | 'shabbat' | 'tracker' | 'trivia' | 'zmanim' | 'blog' | 'chat' | 'contact';
 
 // Inner component to use the context
 const AppContent: React.FC = () => {
@@ -49,7 +48,6 @@ const AppContent: React.FC = () => {
       trivia: 'טריוויה יהודית | MyJew',
       zmanim: 'זמני היום בהלכה | MyJew',
       blog: 'בלוג יהדות וחיזוק | MyJew',
-      video: 'יוצר וידאו | MyJew',
       chat: 'שאל את הרב | MyJew',
       contact: 'צור קשר | MyJew',
     };
