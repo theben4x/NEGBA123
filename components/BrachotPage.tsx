@@ -170,7 +170,8 @@ export const BrachotPage: React.FC = () => {
                  glass-btn-primary
                  px-4 md:px-8 rounded-[1.6rem] 
                  font-black tracking-wide
-                 flex items-center gap-2 z-10 group/btn overflow-hidden`}
+                 flex items-center gap-2 z-10 group/btn overflow-hidden isolate transform-gpu`}
+               style={{ WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}
              >
                {loading ? (
                  <div className="flex items-center gap-2">
@@ -187,8 +188,8 @@ export const BrachotPage: React.FC = () => {
                    </svg>
                  </>
                )}
-               {/* Shine effect */}
-               <div className="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"></div>
+               {/* Shine effect - Start further off-screen to avoid artifacts */}
+               <div className="absolute inset-0 -translate-x-[200%] group-hover/btn:translate-x-[200%] transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 z-0"></div>
              </button>
 
              {/* Glass Dropdown */}
