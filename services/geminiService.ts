@@ -1,4 +1,4 @@
-import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { BlessingResult, HalachaResult } from "../types";
 
 // Initialize the Google GenAI client
