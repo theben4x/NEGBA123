@@ -170,7 +170,7 @@ export const BrachotPage: React.FC = () => {
                  glass-btn-primary
                  px-4 md:px-8 rounded-[1.6rem] 
                  font-black tracking-wide
-                 flex items-center gap-2 z-10 group/btn`}
+                 flex items-center gap-2 z-10 group/btn overflow-hidden`}
              >
                {loading ? (
                  <div className="flex items-center gap-2">

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, Suspense } from 'react';
 import { Logo } from './components/Logo';
 import { AccessibilityMenu } from './components/AccessibilityMenu';
@@ -184,9 +183,6 @@ const AppContent: React.FC = () => {
           {currentPage === 'trivia' && <TriviaPage />}
           {currentPage === 'zmanim' && <ZmanimPage />}
           {currentPage === 'blog' && <BlogPage />}
-          {currentPage === 'video' && <VideoGeneratorPage />}
-          {currentPage === 'chat' && <RabbiChat />}
-          {currentPage === 'contact' && <ContactPage />}
         </Suspense>
       </main>
 

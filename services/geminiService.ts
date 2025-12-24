@@ -1,38 +1,38 @@
-import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
+import { GoogleGenAI, Type } from "@google/genai";
 import { BlessingResult, HalachaResult } from "../types";
 
-// הגדרת ה-AI עם המפתח והמרת סוג למניעת שגיאות
-const ai = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY as string);
+// Initialize the Google GenAI client using process.env.API_KEY as per guidelines
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const blessingSchema = {
-  type: SchemaType.OBJECT,
+  type: Type.OBJECT,
   properties: {
     foodName: {
-      type: SchemaType.STRING,
+      type: Type.STRING,
       description: "The name of the food",
     },
     brachaRishonaTitle: {
-      type: SchemaType.STRING,
+      type: Type.STRING,
       description: "The short name of the first blessing (e.g., Shehakol, HaEtz)",
     },
     brachaRishonaText: {
-      type: SchemaType.STRING,
+      type: Type.STRING,
       description: "The FULL text of the first blessing in Hebrew",
     },
     brachaAcharonaTitle: {
-      type: SchemaType.STRING,
+      type: Type.STRING,
       description: "The short name of the last blessing",
     },
     brachaAcharonaText: {
-      type: SchemaType.STRING,
+      type: Type.STRING,
       description: "The FULL text of the last blessing in Hebrew.",
     },
     tip: {
-      type: SchemaType.STRING,
+      type: Type.STRING,
       description: "A short, helpful Halachic tip regarding this food.",
     },
     category: {
-      type: SchemaType.STRING,
+      type: Type.STRING,
       enum: ["fruit", "vegetable", "grain", "drink", "sweet", "other"],
       description: "The general category of the food",
     },
@@ -41,14 +41,14 @@ const blessingSchema = {
 };
 
 const halachaSchema = {
-  type: SchemaType.OBJECT,
+  type: Type.OBJECT,
   properties: {
-    question: { type: SchemaType.STRING, description: "The user's question reformulated clearly" },
-    answer: { type: SchemaType.STRING, description: "The practical Halachic ruling (Psak)" },
-    summary: { type: SchemaType.STRING, description: "A brief explanation of the reasoning" },
+    question: { type: Type.STRING, description: "The user's question reformulated clearly" },
+    answer: { type: Type.STRING, description: "The practical Halachic ruling (Psak)" },
+    summary: { type: Type.STRING, description: "A brief explanation of the reasoning" },
     sources: {
-      type: SchemaType.ARRAY,
-      items: { type: SchemaType.STRING },
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
       description: "List of authoritative sources"
     }
   },
@@ -56,42 +56,38 @@ const halachaSchema = {
 };
 
 export const getBlessingInfo = async (query: string, language: 'he' | 'en' = 'he'): Promise<BlessingResult> => {
-  const model = ai.getGenerativeModel({
-    model: "gemini-1.5-flash", // שימוש במודל יציב
-  });
-
   const langInstruction = language === 'he' 
     ? "Output fields (foodName, titles, tip) must be in Hebrew." 
     : "Output fields (foodName, titles, tip) must be in English. Keep blessings in Hebrew script.";
 
   const prompt = `Identify the correct Jewish blessings for: "${query}". ${langInstruction}`;
 
-  const result = await model.generateContent({
-    contents: [{ role: "user", parts: [{ text: prompt }] }],
-    generationConfig: {
+  const response = await ai.models.generateContent({
+    model: "gemini-3-flash-preview",
+    contents: prompt,
+    config: {
       responseMimeType: "application/json",
       responseSchema: blessingSchema,
     },
   });
 
-  return JSON.parse(result.response.text());
+  const text = response.text || "{}";
+  return JSON.parse(text);
 };
 
 export const getHalachicAnswer = async (query: string, language: 'he' | 'en' = 'he'): Promise<HalachaResult> => {
-  const model = ai.getGenerativeModel({
-    model: "gemini-1.5-flash",
-  });
-
   const langInstruction = language === 'he' ? "Output in Hebrew." : "Output in English.";
   const prompt = `Answer this Halachic question: "${query}". ${langInstruction}`;
 
-  const result = await model.generateContent({
-    contents: [{ role: "user", parts: [{ text: prompt }] }],
-    generationConfig: {
+  const response = await ai.models.generateContent({
+    model: "gemini-3-flash-preview",
+    contents: prompt,
+    config: {
       responseMimeType: "application/json",
       responseSchema: halachaSchema,
     },
   });
 
-  return JSON.parse(result.response.text());
+  const text = response.text || "{}";
+  return JSON.parse(text);
 };
