@@ -43,28 +43,20 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick }) => {
               <p className="text-gray-600 dark:text-gray-300 font-medium leading-relaxed max-w-sm">
                 {t('mission_text')}
               </p>
-              <div className="flex gap-4 pt-2">
-                {['twitter', 'facebook', 'instagram', 'whatsapp'].map((social) => (
-                  <button key={social} className="w-10 h-10 rounded-full glass-btn flex items-center justify-center text-gray-400 hover:text-brand-blue hover:scale-110 transition-all shadow-sm">
-                    <span className="sr-only">{social}</span>
-                    <div className="w-5 h-5 bg-current opacity-20 rounded-sm"></div> {/* Placeholder Icon */}
-                  </button>
-                ))}
-              </div>
             </div>
 
-            {/* Links Columns */}
-            <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-8">
+            {/* Links Columns - 3 Cols on mobile to be wide instead of long */}
+            <div className="lg:col-span-8 grid grid-cols-3 gap-4 md:gap-8">
               
               {/* Column 1 */}
               <div>
-                <h4 className="font-black text-gray-900 dark:text-white mb-6 text-lg">ניווט מהיר</h4>
+                <h4 className="font-black text-gray-900 dark:text-white mb-6 text-sm md:text-lg">ניווט מהיר</h4>
                 <ul className="space-y-4">
                   {links.general.map((link) => (
                     <li key={link.id}>
                       <button 
                         onClick={() => onNavClick(link.id)}
-                        className="text-gray-500 dark:text-gray-400 hover:text-brand-blue dark:hover:text-brand-gold transition-colors font-medium"
+                        className="text-gray-500 dark:text-gray-400 hover:text-brand-blue dark:hover:text-brand-gold transition-colors font-medium text-sm md:text-base"
                       >
                         {link.label}
                       </button>
@@ -75,13 +67,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick }) => {
 
               {/* Column 2 */}
               <div>
-                <h4 className="font-black text-gray-900 dark:text-white mb-6 text-lg">כלים שימושיים</h4>
+                <h4 className="font-black text-gray-900 dark:text-white mb-6 text-sm md:text-lg">כלים שימושיים</h4>
                 <ul className="space-y-4">
                   {links.tools.map((link) => (
                     <li key={link.id}>
                       <button 
                         onClick={() => onNavClick(link.id)}
-                        className="text-gray-500 dark:text-gray-400 hover:text-brand-blue dark:hover:text-brand-gold transition-colors font-medium"
+                        className="text-gray-500 dark:text-gray-400 hover:text-brand-blue dark:hover:text-brand-gold transition-colors font-medium text-sm md:text-base"
                       >
                         {link.label}
                       </button>
@@ -92,13 +84,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick }) => {
 
               {/* Column 3 */}
               <div>
-                <h4 className="font-black text-gray-900 dark:text-white mb-6 text-lg">מידע וקשר</h4>
+                <h4 className="font-black text-gray-900 dark:text-white mb-6 text-sm md:text-lg">מידע וקשר</h4>
                 <ul className="space-y-4">
                   {links.legal.map((link, i) => (
                     <li key={i}>
                       <button 
                         onClick={link.action}
-                        className="text-gray-500 dark:text-gray-400 hover:text-brand-blue dark:hover:text-brand-gold transition-colors font-medium"
+                        className="text-gray-500 dark:text-gray-400 hover:text-brand-blue dark:hover:text-brand-gold transition-colors font-medium text-sm md:text-base"
                       >
                         {link.label}
                       </button>
