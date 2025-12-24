@@ -1,4 +1,4 @@
-import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { BlessingResult, HalachaResult } from "../types";
 
 // Using process.env.API_KEY as required by guidelines
