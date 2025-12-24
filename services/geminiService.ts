@@ -1,7 +1,8 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { BlessingResult, HalachaResult } from "../types";
 
-// Initialize the Google GenAI client using process.env.API_KEY as per guidelines
+// Initialize the Google GenAI client
+// The API key is obtained from the environment variable
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const blessingSchema = {
@@ -33,8 +34,8 @@ const blessingSchema = {
     },
     category: {
       type: Type.STRING,
+      description: "The general category of the food. Must be one of: fruit, vegetable, grain, drink, sweet, other",
       enum: ["fruit", "vegetable", "grain", "drink", "sweet", "other"],
-      description: "The general category of the food",
     },
   },
   required: ["foodName", "brachaRishonaTitle", "brachaRishonaText", "brachaAcharonaTitle", "brachaAcharonaText", "tip", "category"],
@@ -71,7 +72,11 @@ export const getBlessingInfo = async (query: string, language: 'he' | 'en' = 'he
     },
   });
 
-  const text = response.text || "{}";
+  const text = response.text;
+  if (!text) {
+    throw new Error("Failed to generate content");
+  }
+  
   return JSON.parse(text);
 };
 
@@ -88,6 +93,10 @@ export const getHalachicAnswer = async (query: string, language: 'he' | 'en' = '
     },
   });
 
-  const text = response.text || "{}";
+  const text = response.text;
+  if (!text) {
+    throw new Error("Failed to generate content");
+  }
+  
   return JSON.parse(text);
 };

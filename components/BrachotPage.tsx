@@ -163,15 +163,14 @@ export const BrachotPage: React.FC = () => {
                dir={language === 'he' ? 'rtl' : 'ltr'}
              />
              
-             {/* Enhanced Search Button */}
+             {/* Enhanced Search Button (Shine Removed) */}
              <button 
                onClick={() => handleSearch()}
                className={`absolute ${language === 'he' ? 'left-2' : 'right-2'} top-2 bottom-2 
                  glass-btn-primary
                  px-4 md:px-8 rounded-[1.6rem] 
                  font-black tracking-wide
-                 flex items-center gap-2 z-10 group/btn overflow-hidden isolate transform-gpu`}
-               style={{ WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}
+                 flex items-center gap-2 z-10 group/btn`}
              >
                {loading ? (
                  <div className="flex items-center gap-2">
@@ -188,8 +187,6 @@ export const BrachotPage: React.FC = () => {
                    </svg>
                  </>
                )}
-               {/* Shine effect - Start further off-screen to avoid artifacts */}
-               <div className="absolute inset-0 -translate-x-[200%] group-hover/btn:translate-x-[200%] transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 z-0"></div>
              </button>
 
              {/* Glass Dropdown */}
