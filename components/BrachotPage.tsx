@@ -167,7 +167,7 @@ export const BrachotPage: React.FC = () => {
              <button 
                onClick={() => handleSearch()}
                className={`absolute ${language === 'he' ? 'left-2' : 'right-2'} top-2 bottom-2 
-                 glass-btn-primary
+                 bg-blue-600 hover:bg-blue-700 text-white shadow-lg
                  px-4 md:px-8 rounded-[1.6rem] 
                  font-black tracking-wide
                  flex items-center gap-2 z-10 group/btn`}

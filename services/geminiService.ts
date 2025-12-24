@@ -2,7 +2,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { BlessingResult, HalachaResult } from "../types";
 
 // Initialize the Google GenAI client
-// The API key is obtained from the environment variable
+// The API key is obtained from the environment variable process.env.API_KEY
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const blessingSchema = {
