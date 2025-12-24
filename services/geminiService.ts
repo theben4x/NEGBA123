@@ -1,10 +1,10 @@
 
-import { GoogleGenerativeAI, Type, Schema } from "@google/generative-ai";
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { BlessingResult, HalachaResult } from "../types";
 
 const ai = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
 const blessingSchema: Schema = {
-  type: Type.OBJECT,
+  type: SchemaType.OBJECT,
   properties: {
     foodName: {
       type: Type.STRING,
