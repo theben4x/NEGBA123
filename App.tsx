@@ -182,7 +182,7 @@ const AppContent: React.FC = () => {
       {/* Main Content */}
       <main id="main-content" className="flex-grow w-full max-w-[1920px] mx-auto relative z-10 pt-4 px-4">
         <Suspense fallback={<Spinner />}>
-          {currentPage === 'home' && <BrachotPage onNavigate={handleNavClick} />}
+          {currentPage === 'home' && <BrachotPage />}
           {currentPage === 'shabbat' && <ShabbatPage />}
           {currentPage === 'siddur' && <SiddurPage />}
           {currentPage === 'halacha' && <HalachaPage />}
