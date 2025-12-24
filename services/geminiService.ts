@@ -1,7 +1,6 @@
 import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { BlessingResult, HalachaResult } from "../types";
 
-// שימוש בפורמט החדש והנכון
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY || "";
 const genAI = new GoogleGenerativeAI(apiKey);
 
@@ -37,29 +36,19 @@ const halachaSchema = {
 export const getBlessingInfo = async (query: string, language: 'he' | 'en' = 'he'): Promise<BlessingResult> => {
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   const prompt = `Identify blessings for: "${query}". Output in ${language}.`;
-  
   const result = await model.generateContent({
     contents: [{ role: "user", parts: [{ text: prompt }] }],
-    generationConfig: {
-      responseMimeType: "application/json",
-      responseSchema: blessingSchema,
-    },
+    generationConfig: { responseMimeType: "application/json", responseSchema: blessingSchema }
   });
-
   return JSON.parse(result.response.text());
 };
 
 export const getHalachicAnswer = async (query: string, language: 'he' | 'en' = 'he'): Promise<HalachaResult> => {
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   const prompt = `Answer Halachic question: "${query}". Output in ${language}.`;
-  
   const result = await model.generateContent({
     contents: [{ role: "user", parts: [{ text: prompt }] }],
-    generationConfig: {
-      responseMimeType: "application/json",
-      responseSchema: halachaSchema,
-    },
+    generationConfig: { responseMimeType: "application/json", responseSchema: halachaSchema }
   });
-
   return JSON.parse(result.response.text());
 };
