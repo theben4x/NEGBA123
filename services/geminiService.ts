@@ -1,9 +1,8 @@
 
-import { GoogleGenAI, Type, Schema } from "@google/genai";
+import { GoogleGenerativeAI, Type, Schema } from "@google/generative-ai";
 import { BlessingResult, HalachaResult } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
+const ai = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
 const blessingSchema: Schema = {
   type: Type.OBJECT,
   properties: {
@@ -53,7 +52,7 @@ const halachaSchema: Schema = {
     }
   },
   required: ["question", "answer", "summary", "sources"]
-};
+}
 
 export const getBlessingInfo = async (query: string, language: 'he' | 'en' = 'he'): Promise<BlessingResult> => {
   try {
