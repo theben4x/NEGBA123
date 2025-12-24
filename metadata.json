@@ -1,0 +1,7 @@
+{
+  "name": "MyJew",
+  "description": "A comprehensive Jewish guide for food blessings (Brachot) with search functionality and Halachic tips.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
