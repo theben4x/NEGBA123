@@ -22,12 +22,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick }) => {
       { id: 'tracker', label: t('nav_tracker') },
       { id: 'trivia', label: t('nav_trivia') },
       { id: 'blog', label: t('nav_blog') },
-    ],
-    legal: [
-      { label: 'אודותינו', action: () => {} }, // Placeholder
-      { label: 'תנאי שימוש', action: () => {} },
-      { label: 'מדיניות פרטיות', action: () => {} },
-      { label: 'צור קשר', action: () => onNavClick('contact') },
     ]
   };
 
@@ -45,8 +39,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick }) => {
               </p>
             </div>
 
-            {/* Links Columns - 3 Cols on mobile to be wide instead of long */}
-            <div className="lg:col-span-8 grid grid-cols-3 gap-4 md:gap-8">
+            {/* Links Columns - 2 Cols for better mobile width-wise layout */}
+            <div className="lg:col-span-8 grid grid-cols-2 gap-4 md:gap-8">
               
               {/* Column 1 */}
               <div>
@@ -82,22 +76,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick }) => {
                 </ul>
               </div>
 
-              {/* Column 3 */}
-              <div>
-                <h4 className="font-black text-gray-900 dark:text-white mb-6 text-sm md:text-lg">מידע וקשר</h4>
-                <ul className="space-y-4">
-                  {links.legal.map((link, i) => (
-                    <li key={i}>
-                      <button 
-                        onClick={link.action}
-                        className="text-gray-500 dark:text-gray-400 hover:text-brand-blue dark:hover:text-brand-gold transition-colors font-medium text-sm md:text-base"
-                      >
-                        {link.label}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
             </div>
           </div>
 

@@ -41,7 +41,7 @@ export const Logo: React.FC<{ className?: string }> = ({ className = "" }) => {
           <span className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white tracking-tighter leading-none drop-shadow-sm group-hover:text-brand-blue transition-colors duration-300" style={{ fontFamily: '"Noto Serif Hebrew", serif' }}>
              היהודי
           </span>
-          <span className="-mt-1.5 text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-blue-400 dark:from-blue-400 dark:to-blue-200 tracking-tighter leading-none drop-shadow-sm group-hover:from-brand-gold group-hover:to-orange-400 transition-all duration-300" style={{ fontFamily: '"Noto Serif Hebrew", serif' }}>
+          <span className="mt-1 text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-blue-400 dark:from-blue-400 dark:to-blue-200 tracking-tighter leading-none drop-shadow-sm group-hover:from-brand-gold group-hover:to-orange-400 transition-all duration-300" style={{ fontFamily: '"Noto Serif Hebrew", serif' }}>
              שלי
           </span>
       </div>

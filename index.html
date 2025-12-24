@@ -135,6 +135,33 @@
       .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
       .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,0.15); border-radius: 10px; }
       .dark .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,0.25); }
+
+      /* Rotation Lock Message */
+      #rotate-lock {
+        display: none;
+      }
+
+      @media screen and (orientation: landscape) and (max-height: 500px) {
+        #rotate-lock {
+          display: flex;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: #000000;
+          color: white;
+          z-index: 99999;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          text-align: center;
+          padding: 20px;
+        }
+        #root {
+          display: none;
+        }
+      }
     </style>
   <script type="importmap">
 {
@@ -151,6 +178,11 @@
 </script>
 </head>
   <body class="text-gray-900 min-h-screen flex flex-col dark:text-gray-100 transition-colors duration-500 font-medium antialiased safe-area-inset-bottom">
+    <div id="rotate-lock">
+      <div style="font-size: 40px; margin-bottom: 20px;">📱</div>
+      <h2 style="font-size: 24px; font-weight: bold; margin-bottom: 10px;">נא לסובב את המכשיר</h2>
+      <p>האפליקציה עובדת בצורה הטובה ביותר לאורך.</p>
+    </div>
     <div id="root" class="flex-grow flex flex-col relative z-10"></div>
     <script type="module" src="/index.tsx"></script>
   </body>

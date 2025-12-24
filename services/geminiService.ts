@@ -1,20 +1,19 @@
-import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
+import { GoogleGenAI, Type } from "@google/genai";
 import { BlessingResult, HalachaResult } from "../types";
 
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY || "";
-const genAI = new GoogleGenerativeAI(apiKey);
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const blessingSchema = {
-  type: SchemaType.OBJECT,
+  type: Type.OBJECT,
   properties: {
-    foodName: { type: SchemaType.STRING, description: "The name of the food" },
-    brachaRishonaTitle: { type: SchemaType.STRING, description: "Short title" },
-    brachaRishonaText: { type: SchemaType.STRING, description: "Full Hebrew text" },
-    brachaAcharonaTitle: { type: SchemaType.STRING, description: "Short title" },
-    brachaAcharonaText: { type: SchemaType.STRING, description: "Full Hebrew text" },
-    tip: { type: SchemaType.STRING, description: "Halachic tip" },
+    foodName: { type: Type.STRING, description: "The name of the food" },
+    brachaRishonaTitle: { type: Type.STRING, description: "Short title" },
+    brachaRishonaText: { type: Type.STRING, description: "Full Hebrew text" },
+    brachaAcharonaTitle: { type: Type.STRING, description: "Short title" },
+    brachaAcharonaText: { type: Type.STRING, description: "Full Hebrew text" },
+    tip: { type: Type.STRING, description: "Halachic tip" },
     category: {
-      type: SchemaType.STRING,
+      type: Type.STRING,
       enum: ["fruit", "vegetable", "grain", "drink", "sweet", "other"],
       description: "Food category",
     },
@@ -23,32 +22,48 @@ const blessingSchema = {
 };
 
 const halachaSchema = {
-  type: SchemaType.OBJECT,
+  type: Type.OBJECT,
   properties: {
-    question: { type: SchemaType.STRING, description: "Question" },
-    answer: { type: SchemaType.STRING, description: "Answer" },
-    summary: { type: SchemaType.STRING, description: "Reasoning" },
-    sources: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING }, description: "Sources" }
+    question: { type: Type.STRING, description: "Question" },
+    answer: { type: Type.STRING, description: "Answer" },
+    summary: { type: Type.STRING, description: "Reasoning" },
+    sources: { type: Type.ARRAY, items: { type: Type.STRING }, description: "Sources" }
   },
   required: ["question", "answer", "summary", "sources"]
 };
 
 export const getBlessingInfo = async (query: string, language: 'he' | 'en' = 'he'): Promise<BlessingResult> => {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   const prompt = `Identify blessings for: "${query}". Output in ${language}.`;
-  const result = await model.generateContent({
-    contents: [{ role: "user", parts: [{ text: prompt }] }],
-    generationConfig: { responseMimeType: "application/json", responseSchema: blessingSchema }
+  
+  const response = await ai.models.generateContent({
+    model: "gemini-3-flash-preview",
+    contents: prompt,
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: blessingSchema,
+    }
   });
-  return JSON.parse(result.response.text());
+
+  if (response.text) {
+    return JSON.parse(response.text);
+  }
+  throw new Error("Failed to get blessing info");
 };
 
 export const getHalachicAnswer = async (query: string, language: 'he' | 'en' = 'he'): Promise<HalachaResult> => {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   const prompt = `Answer Halachic question: "${query}". Output in ${language}.`;
-  const result = await model.generateContent({
-    contents: [{ role: "user", parts: [{ text: prompt }] }],
-    generationConfig: { responseMimeType: "application/json", responseSchema: halachaSchema }
+  
+  const response = await ai.models.generateContent({
+    model: "gemini-3-flash-preview",
+    contents: prompt,
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: halachaSchema,
+    }
   });
-  return JSON.parse(result.response.text());
+
+  if (response.text) {
+    return JSON.parse(response.text);
+  }
+  throw new Error("Failed to get halachic answer");
 };
