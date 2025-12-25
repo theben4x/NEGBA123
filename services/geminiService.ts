@@ -1,33 +1,35 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { BlessingResult, HalachaResult } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// תיקון: שימוש בשם הנכון GoogleGenerativeAI ובמפתח הסביבה של Vercel/Vite
+const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || "");
+const ai = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }); 
 
+// הגדרת ה-Schemas (נשאר כפי שהיה, רק מוודא שה-Type מוגדר)
 const blessingSchema = {
-  type: Type.OBJECT,
+  type: "object",
   properties: {
-    foodName: { type: Type.STRING, description: "The name of the food" },
-    brachaRishonaTitle: { type: Type.STRING, description: "Short title" },
-    brachaRishonaText: { type: Type.STRING, description: "Full Hebrew text" },
-    brachaAcharonaTitle: { type: Type.STRING, description: "Short title" },
-    brachaAcharonaText: { type: Type.STRING, description: "Full Hebrew text" },
-    tip: { type: Type.STRING, description: "Halachic tip" },
+    foodName: { type: "string" },
+    brachaRishonaTitle: { type: "string" },
+    brachaRishonaText: { type: "string" },
+    brachaAcharonaTitle: { type: "string" },
+    brachaAcharonaText: { type: "string" },
+    tip: { type: "string" },
     category: {
-      type: Type.STRING,
+      type: "string",
       enum: ["fruit", "vegetable", "grain", "drink", "sweet", "other"],
-      description: "Food category",
     },
   },
   required: ["foodName", "brachaRishonaTitle", "brachaRishonaText", "brachaAcharonaTitle", "brachaAcharonaText", "tip", "category"],
 };
 
 const halachaSchema = {
-  type: Type.OBJECT,
+  type: "object",
   properties: {
-    question: { type: Type.STRING, description: "Question" },
-    answer: { type: Type.STRING, description: "Answer" },
-    summary: { type: Type.STRING, description: "Reasoning" },
-    sources: { type: Type.ARRAY, items: { type: Type.STRING }, description: "Sources" }
+    question: { type: "string" },
+    answer: { type: "string" },
+    summary: { type: "string" },
+    sources: { type: "array", items: { type: "string" } }
   },
   required: ["question", "answer", "summary", "sources"]
 };
@@ -35,35 +37,27 @@ const halachaSchema = {
 export const getBlessingInfo = async (query: string, language: 'he' | 'en' = 'he'): Promise<BlessingResult> => {
   const prompt = `Identify blessings for: "${query}". Output in ${language}.`;
   
-  const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
-    contents: prompt,
-    config: {
+  const result = await ai.generateContent({
+    contents: [{ role: "user", parts: [{ text: prompt }] }],
+    generationConfig: {
       responseMimeType: "application/json",
       responseSchema: blessingSchema,
     }
   });
 
-  if (response.text) {
-    return JSON.parse(response.text);
-  }
-  throw new Error("Failed to get blessing info");
+  return JSON.parse(result.response.text());
 };
 
 export const getHalachicAnswer = async (query: string, language: 'he' | 'en' = 'he'): Promise<HalachaResult> => {
   const prompt = `Answer Halachic question: "${query}". Output in ${language}.`;
   
-  const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
-    contents: prompt,
-    config: {
+  const result = await ai.generateContent({
+    contents: [{ role: "user", parts: [{ text: prompt }] }],
+    generationConfig: {
       responseMimeType: "application/json",
       responseSchema: halachaSchema,
     }
   });
 
-  if (response.text) {
-    return JSON.parse(response.text);
-  }
-  throw new Error("Failed to get halachic answer");
+  return JSON.parse(result.response.text());
 };
