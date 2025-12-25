@@ -1,11 +1,13 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { BlessingResult, HalachaResult } from "../types";
 
-// תיקון: שימוש בשם הנכון GoogleGenerativeAI ובמפתח הסביבה של Vercel/Vite
+// אתחול המנוע עם השם הנכון והמפתח המתאים ל-Vite/Vercel
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || "");
-const ai = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }); 
+const model = genAI.getGenerativeModel({ 
+  model: "gemini-1.5-flash",
+});
 
-// הגדרת ה-Schemas (נשאר כפי שהיה, רק מוודא שה-Type מוגדר)
+// הגדרת המבנה (Schema) בצורה סטנדרטית שעובדת ב-Vercel
 const blessingSchema = {
   type: "object",
   properties: {
@@ -37,7 +39,7 @@ const halachaSchema = {
 export const getBlessingInfo = async (query: string, language: 'he' | 'en' = 'he'): Promise<BlessingResult> => {
   const prompt = `Identify blessings for: "${query}". Output in ${language}.`;
   
-  const result = await ai.generateContent({
+  const result = await model.generateContent({
     contents: [{ role: "user", parts: [{ text: prompt }] }],
     generationConfig: {
       responseMimeType: "application/json",
@@ -45,13 +47,15 @@ export const getBlessingInfo = async (query: string, language: 'he' | 'en' = 'he
     }
   });
 
-  return JSON.parse(result.response.text());
+  const responseText = result.response.text();
+  if (!responseText) throw new Error("No response from AI");
+  return JSON.parse(responseText);
 };
 
 export const getHalachicAnswer = async (query: string, language: 'he' | 'en' = 'he'): Promise<HalachaResult> => {
   const prompt = `Answer Halachic question: "${query}". Output in ${language}.`;
   
-  const result = await ai.generateContent({
+  const result = await model.generateContent({
     contents: [{ role: "user", parts: [{ text: prompt }] }],
     generationConfig: {
       responseMimeType: "application/json",
@@ -59,5 +63,7 @@ export const getHalachicAnswer = async (query: string, language: 'he' | 'en' = '
     }
   });
 
-  return JSON.parse(result.response.text());
+  const responseText = result.response.text();
+  if (!responseText) throw new Error("No response from AI");
+  return JSON.parse(responseText);
 };
