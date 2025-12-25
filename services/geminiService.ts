@@ -1,4 +1,4 @@
-import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { BlessingResult, HalachaResult } from "../types";
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
