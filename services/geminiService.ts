@@ -1,6 +1,9 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { BlessingResult, HalachaResult } from "../types";
 
+// הצהרה על process כדי למנוע שגיאות בנייה ב-Vercel
+declare const process: { env: { API_KEY: string } };
+
 // אתחול המנוע עם השם הנכון והמפתח המתאים
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 

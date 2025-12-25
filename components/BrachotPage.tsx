@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { BlessingResult, FoodItem, InspirationQuote, Prayer, HalachaItem } from '../types';
 import { ResultCard } from './ResultCard';
@@ -6,7 +5,11 @@ import { COMMON_FOODS, CHIZUK_QUOTES, TEHILLIM_DB, TEFILAT_HADERECH, HALACHA_DB 
 import { getBlessingInfo } from '../services/geminiService';
 import { useLanguage } from '../contexts/LanguageContext';
 
-export const BrachotPage: React.FC = () => {
+interface BrachotPageProps {
+  onNavigate?: (page: string) => void;
+}
+
+export const BrachotPage: React.FC<BrachotPageProps> = ({ onNavigate }) => {
   const { t, language } = useLanguage();
   const [query, setQuery] = useState('');
   const [data, setData] = useState<BlessingResult | null>(null);
@@ -133,7 +136,7 @@ export const BrachotPage: React.FC = () => {
       {/* Liquid Hero Section */}
       <section className={`relative transition-all duration-700 ease-in-out flex flex-col items-center justify-center ${data ? 'max-h-0 opacity-0 overflow-hidden scale-95 origin-top' : 'py-12 md:py-24 scale-100 opacity-100'}`}>
         
-        <div className="relative z-10 w-full max-w-4xl px-4 text-center">
+        <div className="relative z-10 w-full max-w-5xl px-4 text-center">
           <h1 className="text-5xl md:text-8xl font-black mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 drop-shadow-sm leading-tight transition-transform hover:scale-[1.01] duration-500">
             {t('hero_title')}
           </h1>
@@ -208,15 +211,15 @@ export const BrachotPage: React.FC = () => {
           
           {/* iOS Widget Style Shortcuts */}
           {!data && (
-            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-xl mx-auto animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto animate-fade-in-up" style={{ animationDelay: '100ms' }}>
               
               {/* Tefilat Haderech */}
               <div className="relative group rounded-[2.2rem]">
                  <button 
                    onClick={() => handlePrayerClick(TEFILAT_HADERECH)} 
-                   className="glass-btn relative w-full h-full rounded-[2.2rem] p-5 md:p-6 flex items-center gap-4 text-start"
+                   className="glass-btn relative w-full h-full rounded-[2.2rem] p-5 md:p-6 flex items-center gap-4 text-start hover:bg-white/60 dark:hover:bg-white/10 transition-colors"
                  >
-                      <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-2xl group-hover:scale-110 transition-transform duration-300">
+                      <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-2xl group-hover:scale-110 transition-transform duration-300 shadow-sm">
                          <span className="text-2xl md:text-3xl">🚍</span>
                       </div>
                       <div>
@@ -234,14 +237,30 @@ export const BrachotPage: React.FC = () => {
               <div className="relative group rounded-[2.2rem]">
                  <button 
                    onClick={() => handlePrayerClick(TEHILLIM_DB[Math.floor(Math.random() * TEHILLIM_DB.length)])} 
-                   className="glass-btn relative w-full h-full rounded-[2.2rem] p-5 md:p-6 flex items-center gap-4 text-start"
+                   className="glass-btn relative w-full h-full rounded-[2.2rem] p-5 md:p-6 flex items-center gap-4 text-start hover:bg-white/60 dark:hover:bg-white/10 transition-colors"
                  >
-                    <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-2xl group-hover:scale-110 transition-transform duration-300">
+                    <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-2xl group-hover:scale-110 transition-transform duration-300 shadow-sm">
                         <span className="text-2xl md:text-3xl">📖</span>
                     </div>
                     <div>
                         <div className="font-black text-lg text-gray-800 dark:text-white group-hover:text-brand-blue transition-colors">{t('random_psalm')}</div>
                         <div className="text-sm text-gray-500 dark:text-gray-400 font-bold">{t('random_psalm_sub')}</div>
+                    </div>
+                 </button>
+              </div>
+
+               {/* New: Articles / Magazine Shortcut */}
+               <div className="relative group rounded-[2.2rem]">
+                 <button 
+                   onClick={() => onNavigate?.('blog')} 
+                   className="glass-btn relative w-full h-full rounded-[2.2rem] p-5 md:p-6 flex items-center gap-4 text-start hover:bg-white/60 dark:hover:bg-white/10 transition-colors"
+                 >
+                    <div className="bg-teal-50 dark:bg-teal-900/20 p-4 rounded-2xl group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                        <span className="text-2xl md:text-3xl">✍️</span>
+                    </div>
+                    <div>
+                        <div className="font-black text-lg text-gray-800 dark:text-white group-hover:text-teal-500 transition-colors">מאמרים</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400 font-bold">מגזין יהדות</div>
                     </div>
                  </button>
               </div>
