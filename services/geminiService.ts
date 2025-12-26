@@ -1,13 +1,11 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { BlessingResult, HalachaResult } from "../types";
 
-// אתחול המנוע - משתמשים בשם הנכון ובמפתח של Vite
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || "");
 const model = genAI.getGenerativeModel({ 
-  model: "gemini-1.5-flash", 
+  model: "gemini-1.5-flash",
 });
 
-// הגדרת הסכימות בצורה פשוטה שעובדת תמיד
 const blessingSchema = {
   type: "object",
   properties: {
@@ -36,9 +34,8 @@ const halachaSchema = {
   required: ["question", "answer", "summary", "sources"]
 };
 
-export const getBlessingInfo = async (query: string, language: 'he' | 'en' = 'he'): Promise<BlessingResult> => {
-  const prompt = `Identify blessings for: "${query}". Output in ${language}.`;
-  
+export const getBlessingInfo = async (query: string): Promise<BlessingResult> => {
+  const prompt = `Identify blessings for: "${query}". Output in Hebrew.`;
   const result = await model.generateContent({
     contents: [{ role: "user", parts: [{ text: prompt }] }],
     generationConfig: {
@@ -46,14 +43,11 @@ export const getBlessingInfo = async (query: string, language: 'he' | 'en' = 'he
       responseSchema: blessingSchema,
     }
   });
-
-  const responseText = result.response.text();
-  return JSON.parse(responseText);
+  return JSON.parse(result.response.text());
 };
 
-export const getHalachicAnswer = async (query: string, language: 'he' | 'en' = 'he'): Promise<HalachaResult> => {
-  const prompt = `Answer Halachic question: "${query}". Output in ${language}.`;
-  
+export const getHalachicAnswer = async (query: string): Promise<HalachaResult> => {
+  const prompt = `Answer Halachic question: "${query}". Output in Hebrew.`;
   const result = await model.generateContent({
     contents: [{ role: "user", parts: [{ text: prompt }] }],
     generationConfig: {
@@ -61,7 +55,5 @@ export const getHalachicAnswer = async (query: string, language: 'he' | 'en' = '
       responseSchema: halachaSchema,
     }
   });
-
-  const responseText = result.response.text();
-  return JSON.parse(responseText);
+  return JSON.parse(result.response.text());
 };
