@@ -131,13 +131,6 @@ export const BrachotPage: React.FC<BrachotPageProps> = ({ onNavigate }) => {
     { title: 'שהכל', desc: 'בשר, חלב, מים וכל השאר.', icon: '🥛' },
   ];
 
-  const ARTICLE_CATEGORIES = [
-    { id: 'parasha', label: 'פרשת השבוע', icon: '📜' },
-    { id: 'holidays', label: 'חגים ומועדים', icon: '🍷' },
-    { id: 'faith', label: 'אמונה וביטחון', icon: '✨' },
-    { id: 'stories', label: 'סיפורי צדיקים', icon: '🕯️' },
-  ];
-
   return (
     <div className="animate-fade-in-up">
       {/* Liquid Hero Section */}
@@ -216,44 +209,17 @@ export const BrachotPage: React.FC<BrachotPageProps> = ({ onNavigate }) => {
              )}
           </div>
 
-          {/* New Article Options Section */}
+          {/* Simplified Quick Shortcuts */}
           {!data && (
             <div className="mt-8 md:mt-12 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-              <h3 className="text-center text-gray-500 dark:text-gray-400 font-bold mb-4 text-sm uppercase tracking-wider">
-                או גלו עולם של תוכן:
-              </h3>
-              
-              {/* Category Chips - Navigates to Blog */}
-              <div className="flex flex-wrap justify-center gap-3 mb-8">
-                {ARTICLE_CATEGORIES.map((cat) => (
-                  <button
-                    key={cat.id}
-                    onClick={() => onNavigate?.('blog')}
-                    className="glass-btn px-5 py-2.5 rounded-2xl flex items-center gap-2 hover:bg-white/60 dark:hover:bg-white/10 transition-all hover:scale-105 active:scale-95"
-                  >
-                    <span className="text-xl">{cat.icon}</span>
-                    <span className="font-bold text-gray-700 dark:text-gray-200">{cat.label}</span>
-                  </button>
-                ))}
-              </div>
-
-              {/* Quick Shortcuts */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto">
-                <button onClick={() => handlePrayerClick(TEFILAT_HADERECH)} className="glass-btn p-4 rounded-2xl flex flex-col items-center gap-2 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-colors group">
-                    <span className="text-2xl group-hover:scale-110 transition-transform">🚍</span>
+              <div className="flex justify-center gap-4 max-w-2xl mx-auto">
+                <button onClick={() => handlePrayerClick(TEFILAT_HADERECH)} className="glass-btn px-6 py-4 rounded-2xl flex flex-col items-center gap-2 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-colors group w-32 md:w-40">
+                    <span className="text-3xl group-hover:scale-110 transition-transform">🚍</span>
                     <span className="font-bold text-sm">תפילת הדרך</span>
                 </button>
-                <button onClick={() => handlePrayerClick(TEHILLIM_DB[Math.floor(Math.random() * TEHILLIM_DB.length)])} className="glass-btn p-4 rounded-2xl flex flex-col items-center gap-2 hover:bg-purple-50/50 dark:hover:bg-purple-900/20 transition-colors group">
-                    <span className="text-2xl group-hover:scale-110 transition-transform">📖</span>
+                <button onClick={() => handlePrayerClick(TEHILLIM_DB[Math.floor(Math.random() * TEHILLIM_DB.length)])} className="glass-btn px-6 py-4 rounded-2xl flex flex-col items-center gap-2 hover:bg-purple-50/50 dark:hover:bg-purple-900/20 transition-colors group w-32 md:w-40">
+                    <span className="text-3xl group-hover:scale-110 transition-transform">📖</span>
                     <span className="font-bold text-sm">פרק תהילים</span>
-                </button>
-                <button onClick={() => onNavigate?.('blog')} className="glass-btn p-4 rounded-2xl flex flex-col items-center gap-2 hover:bg-teal-50/50 dark:hover:bg-teal-900/20 transition-colors group">
-                    <span className="text-2xl group-hover:scale-110 transition-transform">✍️</span>
-                    <span className="font-bold text-sm">מגזין מאמרים</span>
-                </button>
-                <button onClick={() => onNavigate?.('halacha')} className="glass-btn p-4 rounded-2xl flex flex-col items-center gap-2 hover:bg-orange-50/50 dark:hover:bg-orange-900/20 transition-colors group">
-                    <span className="text-2xl group-hover:scale-110 transition-transform">📜</span>
-                    <span className="font-bold text-sm">שו"ת הלכתי</span>
                 </button>
               </div>
             </div>
