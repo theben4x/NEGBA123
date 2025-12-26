@@ -355,4 +355,4 @@ export const BrachotPage: React.FC<BrachotPageProps> = ({ onNavigate }) => {
       )}
     </div>
   );
-};
+}

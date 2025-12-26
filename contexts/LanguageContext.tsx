@@ -63,6 +63,7 @@ const translations: Record<string, Record<Language, string>> = {
   'quick_nav': { he: 'ניווט מהיר', en: 'Quick Nav' },
   'new_tools': { he: 'כלים חדשים', en: 'New Tools' },
   'rights_reserved': { he: 'כל הזכויות שמורות.', en: 'All rights reserved.' },
+  'copy_permitted': { he: 'ניתן להעתיק ולהשתמש בתוכן לזיכוי הרבים.', en: 'Content may be copied and used for public merit.' },
   'built_with_love': { he: 'נבנה באהבה לעם ישראל ולזיכוי הרבים.', en: 'Built with love for Am Yisrael.' },
 };
 

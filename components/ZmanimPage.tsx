@@ -18,7 +18,11 @@ export const ZmanimPage: React.FC = () => {
       setError(null);
       try {
         const todayObj = new Date();
-        const todayStr = todayObj.toISOString().split('T')[0]; // YYYY-MM-DD
+        // Construct local date string manually to avoid UTC shifts
+        const year = todayObj.getFullYear();
+        const month = String(todayObj.getMonth() + 1).padStart(2, '0');
+        const day = String(todayObj.getDate()).padStart(2, '0');
+        const todayStr = `${year}-${month}-${day}`;
         
         // Update display date
         const formattedDate = formatDate(todayObj);

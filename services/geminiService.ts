@@ -1,22 +1,20 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI, Type } from "@google/genai";
 import { BlessingResult, HalachaResult } from "../types";
 
-const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || "");
-const model = genAI.getGenerativeModel({ 
-  model: "gemini-1.5-flash",
-});
+// The API key must be obtained exclusively from the environment variable process.env.API_KEY
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const blessingSchema = {
-  type: "object",
+  type: Type.OBJECT,
   properties: {
-    foodName: { type: "string" },
-    brachaRishonaTitle: { type: "string" },
-    brachaRishonaText: { type: "string" },
-    brachaAcharonaTitle: { type: "string" },
-    brachaAcharonaText: { type: "string" },
-    tip: { type: "string" },
+    foodName: { type: Type.STRING },
+    brachaRishonaTitle: { type: Type.STRING },
+    brachaRishonaText: { type: Type.STRING },
+    brachaAcharonaTitle: { type: Type.STRING },
+    brachaAcharonaText: { type: Type.STRING },
+    tip: { type: Type.STRING },
     category: {
-      type: "string",
+      type: Type.STRING,
       enum: ["fruit", "vegetable", "grain", "drink", "sweet", "other"],
     },
   },
@@ -24,36 +22,46 @@ const blessingSchema = {
 };
 
 const halachaSchema = {
-  type: "object",
+  type: Type.OBJECT,
   properties: {
-    question: { type: "string" },
-    answer: { type: "string" },
-    summary: { type: "string" },
-    sources: { type: "array", items: { type: "string" } }
+    question: { type: Type.STRING },
+    answer: { type: Type.STRING },
+    summary: { type: Type.STRING },
+    sources: { type: Type.ARRAY, items: { type: Type.STRING } }
   },
   required: ["question", "answer", "summary", "sources"]
 };
 
-export const getBlessingInfo = async (query: string): Promise<BlessingResult> => {
-  const prompt = `Identify blessings for: "${query}". Output in Hebrew.`;
-  const result = await model.generateContent({
-    contents: [{ role: "user", parts: [{ text: prompt }] }],
-    generationConfig: {
+export const getBlessingInfo = async (query: string, language: string = 'he'): Promise<BlessingResult> => {
+  const prompt = `Identify blessings for: "${query}". Output in ${language === 'en' ? 'English' : 'Hebrew'}. Return ONLY JSON.`;
+  const response = await ai.models.generateContent({
+    model: "gemini-3-flash-preview",
+    contents: prompt,
+    config: {
       responseMimeType: "application/json",
       responseSchema: blessingSchema,
     }
   });
-  return JSON.parse(result.response.text());
+  
+  if (response.text) {
+    return JSON.parse(response.text);
+  }
+  throw new Error("No response from AI");
 };
 
 export const getHalachicAnswer = async (query: string): Promise<HalachaResult> => {
-  const prompt = `Answer Halachic question: "${query}". Output in Hebrew.`;
-  const result = await model.generateContent({
-    contents: [{ role: "user", parts: [{ text: prompt }] }],
-    generationConfig: {
+  const prompt = `Answer Halachic question: "${query}". Output in Hebrew. Return ONLY JSON.`;
+  const response = await ai.models.generateContent({
+    model: "gemini-3-flash-preview",
+    contents: prompt,
+    config: {
       responseMimeType: "application/json",
       responseSchema: halachaSchema,
     }
   });
-  return JSON.parse(result.response.text());
+
+  if (response.text) {
+    return JSON.parse(response.text);
+  }
+  throw new Error("No response from AI");
 };

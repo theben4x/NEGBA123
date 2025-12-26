@@ -62,6 +62,12 @@
               'fade-in-up': 'fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
               'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
               'shine': 'shine 1.5s infinite',
+              'float': 'float 6s ease-in-out infinite',
+              'float-delayed': 'float 6s ease-in-out 3s infinite',
+              'float-reverse': 'floatReverse 7s ease-in-out infinite',
+              'float-slow': 'float 10s ease-in-out infinite',
+              'spin-slow': 'spin 30s linear infinite',
+              'spin-slow-reverse': 'spinReverse 35s linear infinite',
             },
             keyframes: {
               fadeInUp: {
@@ -70,6 +76,22 @@
               },
               shine: {
                 '100%': { left: '125%' }
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-20px)' },
+              },
+              floatReverse: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(20px)' },
+              },
+              spin: {
+                '0%': { transform: 'rotate(0deg)' },
+                '100%': { transform: 'rotate(360deg)' },
+              },
+              spinReverse: {
+                '0%': { transform: 'rotate(360deg)' },
+                '100%': { transform: 'rotate(0deg)' },
               }
             },
           }

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Logo } from './Logo';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -79,7 +80,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick }) => {
           </div>
 
           <div className="mt-16 pt-8 border-t border-gray-200/50 dark:border-gray-700/50 flex flex-col md:flex-row items-center justify-between gap-4 text-sm font-bold text-gray-400">
-            <p>© {new Date().getFullYear()} MyJew. {t('rights_reserved')}</p>
+            <div className="text-center md:text-right">
+                <p>© {new Date().getFullYear()} MyJew. {t('rights_reserved')}</p>
+                <p className="text-xs mt-1 font-normal opacity-80">{t('copy_permitted')}</p>
+            </div>
             <p className="flex items-center gap-1">
               {t('built_with_love')} <span className="text-red-500">❤️</span>
             </p>
