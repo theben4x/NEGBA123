@@ -212,7 +212,7 @@ export const BrachotPage: React.FC<BrachotPageProps> = ({ onNavigate }) => {
           {/* Simplified Quick Shortcuts */}
           {!data && (
             <div className="mt-8 md:mt-12 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-              <div className="flex justify-center gap-4 max-w-2xl mx-auto">
+              <div className="flex justify-center flex-wrap gap-4 max-w-2xl mx-auto">
                 <button onClick={() => handlePrayerClick(TEFILAT_HADERECH)} className="glass-btn px-6 py-4 rounded-2xl flex flex-col items-center gap-2 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-colors group w-32 md:w-40">
                     <span className="text-3xl group-hover:scale-110 transition-transform">🚍</span>
                     <span className="font-bold text-sm">תפילת הדרך</span>
@@ -220,6 +220,10 @@ export const BrachotPage: React.FC<BrachotPageProps> = ({ onNavigate }) => {
                 <button onClick={() => handlePrayerClick(TEHILLIM_DB[Math.floor(Math.random() * TEHILLIM_DB.length)])} className="glass-btn px-6 py-4 rounded-2xl flex flex-col items-center gap-2 hover:bg-purple-50/50 dark:hover:bg-purple-900/20 transition-colors group w-32 md:w-40">
                     <span className="text-3xl group-hover:scale-110 transition-transform">📖</span>
                     <span className="font-bold text-sm">פרק תהילים</span>
+                </button>
+                <button onClick={() => onNavigate?.('blog')} className="glass-btn px-6 py-4 rounded-2xl flex flex-col items-center gap-2 hover:bg-teal-50/50 dark:hover:bg-teal-900/20 transition-colors group w-32 md:w-40">
+                    <span className="text-3xl group-hover:scale-110 transition-transform">✍️</span>
+                    <span className="font-bold text-sm">מאמרים</span>
                 </button>
               </div>
             </div>

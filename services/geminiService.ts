@@ -1,4 +1,4 @@
-import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { BlessingResult, HalachaResult } from "../types";
 
 // Ensure process.env.API_KEY is recognized without conflicting with @types/node
@@ -10,10 +10,10 @@ declare global {
   }
 }
 
-// אתחול המנוע עם השם הנכון והמפתח המתאים
+// אתחול המנוע עם הספרייה החדשה
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
-// הגדרת המבנה (Schema) בצורה סטנדרטית
+// הגדרת המבנה (Schema) באמצעות Type
 const blessingSchema = {
   type: Type.OBJECT,
   properties: {
