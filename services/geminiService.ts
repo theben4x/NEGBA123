@@ -1,41 +1,37 @@
-import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { BlessingResult, HalachaResult } from "../types";
 
-// ב-Vercel/Vite משתמשים ב-import.meta.env במקום process.env
+// הגדרת המפתח והמודל בצורה בטוחה ל-Vercel
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || "";
 const genAI = new GoogleGenerativeAI(API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-// הגדרת המודל - בחוץ משתמשים ב-1.5-flash שהוא יציב
-const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash",
-});
-
+// הגדרת הסכמה של הברכות - שימוש במבנה ישיר במקום SchemaType
 const blessingSchema = {
-  description: "Blessing information",
-  type: SchemaType.OBJECT,
+  type: "object",
   properties: {
-    foodName: { type: SchemaType.STRING },
-    brachaRishonaTitle: { type: SchemaType.STRING },
-    brachaRishonaText: { type: SchemaType.STRING },
-    brachaAcharonaTitle: { type: SchemaType.STRING },
-    brachaAcharonaText: { type: SchemaType.STRING },
-    tip: { type: SchemaType.STRING },
+    foodName: { type: "string" },
+    brachaRishonaTitle: { type: "string" },
+    brachaRishonaText: { type: "string" },
+    brachaAcharonaTitle: { type: "string" },
+    brachaAcharonaText: { type: "string" },
+    tip: { type: "string" },
     category: {
-      type: SchemaType.STRING,
+      type: "string",
       enum: ["fruit", "vegetable", "grain", "drink", "sweet", "other"],
     },
   },
   required: ["foodName", "brachaRishonaTitle", "brachaRishonaText", "brachaAcharonaTitle", "brachaAcharonaText", "tip", "category"],
 };
 
+// הגדרת הסכמה של ההלכה
 const halachaSchema = {
-  description: "Halachic answer",
-  type: SchemaType.OBJECT,
+  type: "object",
   properties: {
-    question: { type: SchemaType.STRING },
-    answer: { type: SchemaType.STRING },
-    summary: { type: SchemaType.STRING },
-    sources: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } }
+    question: { type: "string" },
+    answer: { type: "string" },
+    summary: { type: "string" },
+    sources: { type: "array", items: { type: "string" } }
   },
   required: ["question", "answer", "summary", "sources"]
 };
@@ -47,12 +43,11 @@ export const getBlessingInfo = async (query: string, language: string = 'he'): P
     contents: [{ role: "user", parts: [{ text: prompt }] }],
     generationConfig: {
       responseMimeType: "application/json",
-      responseSchema: blessingSchema,
+      responseSchema: blessingSchema as any, // השתמשנו ב-any כדי למנוע בעיות טייפינג ב-Build
     },
   });
 
-  const response = result.response;
-  return JSON.parse(response.text());
+  return JSON.parse(result.response.text());
 };
 
 export const getHalachicAnswer = async (query: string): Promise<HalachaResult> => {
@@ -62,10 +57,9 @@ export const getHalachicAnswer = async (query: string): Promise<HalachaResult> =
     contents: [{ role: "user", parts: [{ text: prompt }] }],
     generationConfig: {
       responseMimeType: "application/json",
-      responseSchema: halachaSchema,
+      responseSchema: halachaSchema as any,
     },
   });
 
-  const response = result.response;
-  return JSON.parse(response.text());
+  return JSON.parse(result.response.text());
 };
