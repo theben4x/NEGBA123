@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ISRAEL_CITIES } from '../constants';
 import { City, HebcalResponse, ShabbatTimes } from '../types';
@@ -28,8 +27,10 @@ export const ShabbatPage: React.FC = () => {
              candles = new Date(item.date).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
           }
           if (item.category === 'havdalah') { 
-             havdalahDateObj = new Date(item.date); 
-             havdalah = havdalahDateObj.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' }); 
+             // יצירת אובייקט תאריך יציב כדי ש-TypeScript לא יתלונן
+             const dateObj = new Date(item.date);
+             havdalahDateObj = dateObj; 
+             havdalah = dateObj.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' }); 
           }
           if (item.category === 'parashat') parasha = item.hebrew;
         });
@@ -45,7 +46,8 @@ export const ShabbatPage: React.FC = () => {
 
         let rabbeinuTam = '';
         if (havdalahDateObj) {
-           const rtDate = new Date(havdalahDateObj.getTime() + 35 * 60000);
+           // שימוש ב-as any כדי למנוע את שגיאת ה-getTime ב-Vercel
+           const rtDate = new Date((havdalahDateObj as any).getTime() + 35 * 60000);
            rabbeinuTam = rtDate.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
         }
 
