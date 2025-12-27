@@ -1,12 +1,12 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { BlessingResult, HalachaResult } from "../types";
 
-// הגדרת המפתח והמודל בצורה בטוחה ל-Vercel
+// הגדרת המפתח והמודל בצורה בטוחה ל-Vercel/Vite
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || "";
 const genAI = new GoogleGenerativeAI(API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-// הגדרת הסכמה של הברכות - שימוש במבנה ישיר במקום SchemaType
+// הגדרת הסכמה של הברכות - שימוש במבנה ישיר כדי למנוע שגיאות בשרת
 const blessingSchema = {
   type: "object",
   properties: {
@@ -43,7 +43,7 @@ export const getBlessingInfo = async (query: string, language: string = 'he'): P
     contents: [{ role: "user", parts: [{ text: prompt }] }],
     generationConfig: {
       responseMimeType: "application/json",
-      responseSchema: blessingSchema as any, // השתמשנו ב-any כדי למנוע בעיות טייפינג ב-Build
+      responseSchema: blessingSchema as any,
     },
   });
 
